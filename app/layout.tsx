@@ -8,6 +8,11 @@ const dmSans = DM_Sans({
   weight: ["400", "500", "600", "700"],
 });
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ||
+  "https://lagos-rent-calculator.vercel.app";
+const ogImage = siteUrl + "/og-image.png";
+
 export const metadata: Metadata = {
   title:
     "Lagos Rent Affordability Calculator 2026 | How Much Rent Can I Afford in Lagos?",
@@ -30,10 +35,11 @@ export const metadata: Metadata = {
       "Lagos Rent Affordability Calculator 2026 | How Much Rent Can I Afford in Lagos?",
     description:
       "Calculate exactly how much rent you can afford in Lagos, Nigeria. Includes agency fee, legal fee, and caution deposit in your total move-in cost. Compare all major Lagos neighbourhoods.",
-    url: "https://lagosrentcalculator.com",
+    url: siteUrl,
     siteName: "Lagos Rent Calculator",
     locale: "en_NG",
     type: "website",
+    images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
@@ -41,9 +47,10 @@ export const metadata: Metadata = {
       "Lagos Rent Affordability Calculator 2026 | How Much Rent Can I Afford in Lagos?",
     description:
       "Calculate exactly how much rent you can afford in Lagos, Nigeria. Includes agency fee, legal fee, and caution deposit in your total move-in cost. Compare all major Lagos neighbourhoods.",
+    images: [ogImage],
   },
   robots: { index: true, follow: true },
-  alternates: { canonical: "https://lagosrentcalculator.com" },
+  alternates: { canonical: siteUrl },
 };
 
 export default function RootLayout({

@@ -15,11 +15,15 @@ function formatInputWithCommas(value: string): string {
   return Number(digits).toLocaleString("en-NG");
 }
 
-type AffordabilityStatus = "comfortable" | "stretched" | "tight" | "over budget";
+type AffordabilityStatus =
+  | "comfortable"
+  | "stretched"
+  | "tight"
+  | "over budget";
 
 function getStatus(
   maxMonthlyRent: number,
-  rentRange: [number, number]
+  rentRange: [number, number],
 ): AffordabilityStatus {
   const [min, max] = rentRange;
   const avg = (min + max) / 2;
@@ -58,7 +62,7 @@ const statusConfig: Record<
 export default function RentCalculator() {
   const [monthlyIncome, setMonthlyIncome] = useState<number>(0);
   const [incomeDisplay, setIncomeDisplay] = useState<string>("");
-  const [earners, setEarners] = useState<1 | 2>(1);
+  const [earners, setEarners] = useState<1 | 2 | 3>(1);
   const [ratioPercent, setRatioPercent] = useState<number>(30);
   const [aptTypeIndex, setAptTypeIndex] = useState<0 | 1 | 2 | 3>(1);
 
@@ -138,7 +142,7 @@ export default function RentCalculator() {
             <select
               id="earners"
               value={earners}
-              onChange={(e) => setEarners(Number(e.target.value) as 1 | 2)}
+              onChange={(e) => setEarners(Number(e.target.value) as 1 | 2 | 3)}
               className="w-full rounded-lg border border-border bg-background py-3 px-4 text-base font-medium text-foreground outline-none cursor-pointer transition-all duration-200 focus:border-accent-purple focus:ring-1 focus:ring-accent-purple/30 appearance-none"
               style={{
                 backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238589a5' d='M2 4l4 4 4-4'/%3E%3C/svg%3E")`,
@@ -148,6 +152,7 @@ export default function RentCalculator() {
             >
               <option value={1}>1 person</option>
               <option value={2}>2 people</option>
+              <option value={3}>3 people</option>
             </select>
           </div>
         </div>
@@ -275,7 +280,7 @@ export default function RentCalculator() {
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-foreground-muted">
-                  Caution / security deposit (10%)
+                  Caution deposit (10%)
                 </span>
                 <span className="text-sm font-medium">
                   {formatNaira(calculations.cautionFee)}
@@ -306,9 +311,7 @@ export default function RentCalculator() {
                     className="neighbourhood-card rounded-xl border border-border bg-surface p-4 flex items-center justify-between gap-3"
                   >
                     <div className="min-w-0">
-                      <p className="font-semibold text-sm truncate">
-                        {n.name}
-                      </p>
+                      <p className="font-semibold text-sm truncate">{n.name}</p>
                       <p className="text-xs mt-0.5 text-foreground-muted">
                         {n.area} · {formatNaira(min)} – {formatNaira(max)}/mo
                       </p>
@@ -326,9 +329,12 @@ export default function RentCalculator() {
 
           {/* Footer note */}
           <p className="mt-6 text-xs leading-relaxed text-foreground-muted">
-            Rent data sourced from Nigeria Property Centre &amp; TheAfricanvestor.
-            Lagos rents rose 12–18% year-on-year in 2026. The 30% rule is a
-            guide — adjust based on your actual fixed expenses.
+            Rent data sourced from PropertyPro &amp; NaijaHouses. Lagos rents
+            are estimated to have risen 10–20% year-on-year in 2026, driven by
+            naira depreciation and a shortage of quality housing stock,
+            particularly in prime Island neighbourhoods. Figures are based on
+            observed listings across PropertyPro and NaijaHouses. The 30% rule
+            is a guide — adjust based on your actual fixed expenses.
           </p>
         </div>
       ) : (
@@ -346,7 +352,13 @@ export default function RentCalculator() {
               strokeLinejoin="round"
             >
               <defs>
-                <linearGradient id="emptyGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <linearGradient
+                  id="emptyGrad"
+                  x1="0%"
+                  y1="0%"
+                  x2="100%"
+                  y2="100%"
+                >
                   <stop offset="0%" stopColor="#a371f7" />
                   <stop offset="100%" stopColor="#3ecfda" />
                 </linearGradient>

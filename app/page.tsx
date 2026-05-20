@@ -13,7 +13,9 @@ const jsonLd = {
   name: "Lagos Rent Affordability Calculator",
   description:
     "Calculate how much rent you can afford in Lagos including agency fees, legal fees, and caution deposits.",
-  url: "https://lagosrentcalculator.com",
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    "https://lagos-rent-calculator.vercel.app",
   applicationCategory: "FinanceApplication",
   operatingSystem: "All",
   offers: {
@@ -31,6 +33,53 @@ const jsonLd = {
   },
 };
 
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "How is rent paid in Lagos?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Most landlords require 1–2 years upfront. Monthly rent arrangements are rare outside serviced apartments.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is agency fee in Lagos?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Agency fee is paid to the estate agent. It is typically 10% of annual rent and is paid once at signing, non-refundable.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is a caution deposit in Lagos?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A caution deposit (usually 10% of annual rent) held against damage. It is refundable at the end of the tenancy if the property is returned in good condition.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How much has rent increased in Lagos in 2026?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Rents across Lagos are estimated to have risen 10–20% year-on-year in 2026, driven by naira depreciation and a shortage of quality housing stock, particularly in prime Island neighbourhoods. Figures are based on observed listings across PropertyPro and NaijaHouses.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Which part of Lagos is cheapest to rent?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The most affordable areas are Ikorodu, Ojodu, Festac, and Isolo on the Mainland, where a decent 1-bedroom can be found for ₦50,000–₦100,000 per month.",
+      },
+    },
+  ],
+};
+
 const faqs = [
   {
     question: "How is rent paid in Lagos?",
@@ -43,14 +92,14 @@ const faqs = [
       "Agency fee is paid to the estate agent. It is typically 10% of annual rent and is paid once at signing, non-refundable.",
   },
   {
-    question: "What is a caution fee in Lagos?",
+    question: "What is a caution deposit in Lagos?",
     answer:
       "A caution deposit (usually 10% of annual rent) held against damage. It is refundable at the end of the tenancy if the property is returned in good condition.",
   },
   {
     question: "How much has rent increased in Lagos in 2026?",
     answer:
-      "Rents across Lagos rose 12–18% year-on-year in 2026, driven by naira depreciation and a shortage of quality housing stock, especially in prime Island neighbourhoods.",
+      "Rents across Lagos are estimated to have risen 10–20% year-on-year in 2026, driven by naira depreciation and a shortage of quality housing stock, particularly in prime Island neighbourhoods. Figures are based on observed listings across PropertyPro and NaijaHouses.",
   },
   {
     question: "Which part of Lagos is cheapest to rent?",
@@ -123,6 +172,10 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
 
       <main className="flex-1">
         {/* Hero Section */}
@@ -148,8 +201,8 @@ export default function Home() {
           <p className="text-sm leading-relaxed max-w-xl mx-auto text-foreground-muted">
             Most Lagos rent guides miss the full picture. Landlords require one
             year&rsquo;s rent upfront, plus an agency fee of 10%, a legal fee of
-            10%, and a caution/security deposit of 10%. That means the true
-            move-in cost is typically{" "}
+            10%, and a caution deposit of 10%. That means the true move-in cost
+            is typically{" "}
             <strong className="text-foreground">
               130% of your stated annual rent
             </strong>
@@ -193,12 +246,11 @@ export default function Home() {
                 tenants pay three additional fees at signing: an agency fee (10%
                 of annual rent paid to the estate agent who found the property),
                 a legal/agreement fee (10% covering the tenancy agreement
-                prepared by the landlord&rsquo;s solicitor), and a
-                caution/security deposit (10% held against potential property
-                damage). This makes the true move-in cost approximately 1.3× the
-                annual rent. For example, an apartment at ₦150,000 per month
-                costs ₦1,800,000 per year — but the total amount you need to
-                move in is{" "}
+                prepared by the landlord&rsquo;s solicitor), and a caution
+                deposit (10% held against potential property damage). This makes
+                the true move-in cost approximately 1.3× the annual rent. For
+                example, an apartment at ₦150,000 per month costs ₦1,800,000 per
+                year — but the total amount you need to move in is{" "}
                 <strong className="text-foreground">₦2,340,000</strong>.
               </p>
             </section>
@@ -211,7 +263,7 @@ export default function Home() {
               <div className="space-y-6">
                 {areaOrder.map((area) => {
                   const areaNeighbourhoods = NEIGHBOURHOODS.filter(
-                    (n) => n.area === area
+                    (n) => n.area === area,
                   );
                   return (
                     <div key={area}>
@@ -271,13 +323,13 @@ export default function Home() {
               </h2>
               <p className="text-sm leading-relaxed mb-3 text-foreground-muted">
                 Lagos Island — encompassing Victoria Island, Ikoyi, and Lekki —
-                is the commercial and social hub of the city. It offers proximity
-                to major corporate offices, fine dining, nightlife, and premium
-                amenities. However, this comes at a steep price: rents on the
-                Island can be two to five times higher than equivalent apartments
-                on the Mainland. Traffic on key routes like the Lekki-Epe
-                Expressway and Third Mainland Bridge can add hours to a daily
-                commute, especially during rush hour.
+                is the commercial and social hub of the city. It offers
+                proximity to major corporate offices, fine dining, nightlife,
+                and premium amenities. However, this comes at a steep price:
+                rents on the Island can be two to five times higher than
+                equivalent apartments on the Mainland. Traffic on key routes
+                like the Lekki-Epe Expressway and Third Mainland Bridge can add
+                hours to a daily commute, especially during rush hour.
               </p>
               <p className="text-sm leading-relaxed text-foreground-muted">
                 Mainland areas such as Yaba, Surulere, Ikeja, and Ikorodu offer
@@ -307,8 +359,8 @@ export default function Home() {
       <footer className="border-t border-border py-6 px-4 sm:px-6">
         <p className="text-xs text-center max-w-2xl mx-auto text-foreground-muted">
           © 2026 Lagos Rent Calculator. Built to help Nigerians make smarter
-          housing decisions. Data is indicative and may vary by specific location
-          and property condition.
+          housing decisions. Data is indicative and may vary by specific
+          location and property condition.
         </p>
       </footer>
     </>
